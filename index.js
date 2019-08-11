@@ -72,7 +72,9 @@ NexiaThermostat.prototype = {
         }
         var thisTStat = this._findTStatInNexiaResponse();
         var f = this._findCurrentTemp(thisTStat);
+        this.log("Zone current template is: %f F", f);
         var c = (f - 32.0) / 1.8;
+        this.log("Zone current template is: %f C", c);
         callback(null, c);
     },
     getTargetTemperature: function(callback) {
