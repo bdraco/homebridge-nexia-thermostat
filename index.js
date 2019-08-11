@@ -208,7 +208,7 @@ NexiaThermostat.prototype = {
 
                 return;
             }).catch(function(err) {
-                this.log("Error from get: " + err);
+                this.log("Error from get: %j", err);
             });
     },
     _get: function(url) {
@@ -268,9 +268,6 @@ NexiaThermostat.prototype = {
         var key_name;
         var url;
         if (thisTStat.hasOwnProperty("zones")) {
-          this.log("zones: %j", thisTStat.zones);
-          this.log("this zones: %j", thisTStat.zones[this.zone]);
-          this.log("this zone features: %j", thisTStat.zones[this.zone].features[0]);
           this.log("this zone actions: %j", thisTStat.zones[this.zone].features[0].actions);
             key_name = Object.keys(thisTStat.zones[this.zone].features[0].actions)[0];
             url = thisTStat.zones[this.zone].features[0].actions[key_name].href;
@@ -306,7 +303,7 @@ NexiaThermostat.prototype = {
         return this._post(url, json_struct).promise().bind(this)
             .then(function(body) {
               this.log("Set Temp!");
-                this.log(body);
+                //this.log(body);
   
               if (callback) {
                     callback(null, value);
