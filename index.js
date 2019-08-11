@@ -424,15 +424,14 @@ NexiaThermostat.prototype = {
     },
 
     _findCurrentSetPoint: function(thisTStat) {
-        var target_state = this._findTargetState;
+        var target_state = this._findTargetState(thisTStat);
         if (thisTStat.hasOwnProperty("zones")) {
-            var zone_zero = thisTStat.zones[this.zone];
+            var this_zone = thisTStat.zones[this.zone];
             if (target_state === Characteristic.TargetHeatingCoolingState.COOL) {
-                return zone_zero.setpoints.cool;
+                return this_zone.setpoints.cool || this_zone.cooling_setpoint;
             } else if (target_state === Characteristic.TargetHeatingCoolingState.HEAT) {
-                return zone_zero.setpoints.heat;
+                return this_zone.setpoints.heat || this_zone.heating_setpoint;
             }
-            return zone_zero.temperature;
         } else if (thisTStat.hasOwnProperty("features")) {
             var features_node = thisTStat.features[this.zone];
             if (target_state === Characteristic.TargetHeatingCoolingState.COOL && features_node.hasOwnProperty("setpoint_cool")) {
