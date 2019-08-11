@@ -68,8 +68,7 @@ NexiaThermostat.prototype = {
           .getCharacteristic(Characteristic.TargetTemperature)
           .setProps({
             minValue: minTemperature,
-            maxValue: maxTemperature,
-            minStep: 1
+            maxValue: maxTemperature
           });
  
         return callback(null, characteristic);
