@@ -55,6 +55,24 @@ NexiaThermostat.prototype = {
         }
         var thisTStat = this._findTStatInNexiaResponse();
         var characteristic = this._findTargetState(thisTStat);
+        var minTemperature = 12.77;
+        var maxTemperature = 37.22;
+        if (characteristic == Characteristic.TargetHeatingCoolingState.HEAT) {
+          minTemperature = 12.77;
+          maxTemperature = 32.22;
+        } else if (characteristic == Characteristic.TargetHeatingCoolingState.COOL) {
+          minTemperature = 15.55;
+          maxTemperature = 37.22;
+        }
+        service
+          .getCharacteristic(Characteristic.TargetTemperature)
+          .setProps({
+            minValue: minTemperature,
+            maxValue: maxTemperature,
+            minStep: 1
+          });
+                
+ 
         return callback(null, characteristic);
     },
     setTargetHeatingCoolingState: function(value, callback) {
@@ -305,7 +323,7 @@ NexiaThermostat.prototype = {
               this.log("Set Temp!");
                 //this.log(body);
   
-              if (callback) {
+                if (callback) {
                     callback(null, value);
                 }
                         // TODO -- the body may be able to reused for refreshData to avoid hitting
@@ -349,22 +367,6 @@ NexiaThermostat.prototype = {
                 // Since data is out of sync (HVAC state is wrong the set temp will fail)
                 // If we can use the body of the response to update the current Data
                 // this will fix it
-                var minTemperature = 12.77;
-                var maxTemperature = 37.22;
-                if (value == "heat") { 
-                 minTemperature = 12.77;
-                 maxTemperature = 32.22;
-                } else if (value == "cool") {
-                 minTemperature = 15.55;
-                 maxTemperature = 37.22;
-                }
-                  service
-                .getCharacteristic(Characteristic.TargetTemperature)
-                .setProps({
-                  minValue: minTemperature,
-                  maxValue: maxTemperature,
-                  minStep: 1
-                });
                 
                  
                 return this._setTemp(thisTStat, c);
