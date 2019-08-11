@@ -277,10 +277,18 @@ NexiaThermostat.prototype = {
         var json_struct;
         switch (targetState) {
             case Characteristic.TargetHeatingCoolingState.AUTO:
-                json_struct = {
+                if (f <= this._findCurrentTemp(thisTStat)) {
+                  json_struct = {
                     "heat": f + 3,
+                    "cool": f
+                  };
+                } else {
+                  json_struct = {
+                    "heat": f,
                     "cool": f - 3
-                };
+                  };
+
+                }  
                 break;
             case Characteristic.TargetHeatingCoolingState.HEAT:
                 json_struct = {
