@@ -342,18 +342,25 @@ NexiaThermostat.prototype = {
         // assume settings[0]
         var f = this._findCurrentSetPoint(thisTStat);
         var c = (f - 32.0) / 1.8;
-
+        var configRoot;
+        if (thisTStat.hasOwnProperty("zones")) {
+            configRoot = thisTStat.zones[this.zone];
+        } else if (thisTStat.hasOwnProperty("settings")) {
+            // should search settings for hvac_mode and not just
+            // assume settings[0]
+            configRoot = thisTStat.settings[0];
+        }
         this.log("Finding zone mode");
         var zonemode = 1;
-        for(var i = 0;i < thisTStat.settings.length;i++) {
-          this.log("setting [%d] = %j", i, thisTStat.settings[i]); 
-          if (thisTStat.settings[i].type == "zone_mode") {
+        for(var i = 0;i < configRoot.settings.length;i++) {
+          this.log("setting [%d] = %j", i, configRoot.settings[i]); 
+          if (configRoot.settings[i].type == "zone_mode" || configRoot.settings[i].type == "hvac_mode") {
             zonemode = i;
             break;
           }
         }
 
-        var url = thisTStat.settings[zonemode]._links.self.href;
+        var url = configRoot.settings[zonemode]._links.self.href;
         var txt_value = this.ConfigKeyForheatingCoolingState(value);
         
         
