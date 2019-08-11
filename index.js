@@ -195,9 +195,7 @@ NexiaThermostat.prototype = {
                     return;
                 }
                 this._currentData = parse;
-
                 this._updateData();
-
                 /*
                  *
                  *
