@@ -264,8 +264,8 @@ NexiaThermostat.prototype = {
 // *** url may be undef here because the stat has gone from Off to Cool/Heat
 // and we haven't updated the data yet so we don't have the url to set it
 
-        var key_name = Object.keys(thisTStat.features[0].actions)[0]
-        var url = thisTStat.features[0].actions[key_name].href;
+        var key_name = Object.keys(thisTStat.features[this.zone].actions)[0]
+        var url = thisTStat.features[this.zone].actions[key_name].href;
         var targetState = this._findTargetState(thisTStat);
         this.log("_findTargetState: " + targetState);
         var json_struct;
@@ -373,7 +373,7 @@ NexiaThermostat.prototype = {
         } else if (thisTStat.hasOwnProperty("features")) {
             // should search settings for hvac_mode and not just
             // assume settings[0]
-            rawState = thisTStat.features[0].status;
+            rawState = thisTStat.features[this.zone].status;
             this.log("_findCurrentState:" + rawState);
         } else {
             this.log("no state");
@@ -392,7 +392,7 @@ NexiaThermostat.prototype = {
             }
             return zone_zero.temperature;
         } else if (thisTStat.hasOwnProperty("features")) {
-            var features_node = thisTStat.features[0];
+            var features_node = thisTStat.features[this.zone];
             if (target_state === Characteristic.TargetHeatingCoolingState.COOL && features_node.hasOwnProperty("setpoint_cool")) {
                 return features_node.setpoint_cool;
             } else if (target_state === Characteristic.TargetHeatingCoolingState.HEAT && features_node.hasOwnProperty("setpoint_heat")) {
@@ -412,7 +412,7 @@ NexiaThermostat.prototype = {
         if (thisTStat.hasOwnProperty("zones")) {
             return thisTStat.zones[this.zone].temperature;
         } else if (thisTStat.hasOwnProperty("features")) {
-            return thisTStat.features[0].temperature;
+            return thisTStat.features[this.zone].temperature;
         }
 
         this.log("no state");
