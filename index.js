@@ -64,7 +64,7 @@ NexiaThermostat.prototype = {
           minTemperature = 15.55;
           maxTemperature = 37.22;
         }
-        service
+        this.service
           .getCharacteristic(Characteristic.TargetTemperature)
           .setProps({
             minValue: minTemperature,
