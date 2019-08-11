@@ -5,7 +5,7 @@ var Promise = require('bluebird');
 var util = require('util');
 
 
-require('request-debug')(rp);
+//require('request-debug')(rp);
 
 module.exports = function(homebridge) {
     Service = homebridge.hap.Service;
