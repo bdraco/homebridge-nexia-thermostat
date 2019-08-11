@@ -372,7 +372,7 @@ NexiaThermostat.prototype = {
                  
                 return this._setTemp(thisTStat, c);
             }).catch(function(err) {
-                this.log("Error from _post to :" + url + ":  " + err);
+                this.log("Error from _post to %s: %j", url, err);
             });
     },
 
