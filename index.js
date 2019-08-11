@@ -453,7 +453,9 @@ NexiaThermostat.prototype = {
                 return this_zone.setpoints.cool || this_zone.cooling_setpoint;
             } else if (target_state === Characteristic.TargetHeatingCoolingState.HEAT) {
                 return this_zone.setpoints.heat || this_zone.heating_setpoint;
-            }
+            } else {  
+              this.log("no current setpoint: %j", thisTStat.zones[this.zone]);
+            } 
         } else if (thisTStat.hasOwnProperty("features")) {
             var features_node = thisTStat.features[this.zone];
             if (target_state === Characteristic.TargetHeatingCoolingState.COOL && features_node.hasOwnProperty("setpoint_cool")) {
@@ -465,9 +467,9 @@ NexiaThermostat.prototype = {
             } else if (features_node.hasOwnProperty("setpoint_heat")) {
                 return features_node.setpoint_heat;
             }
+            this.log("no current setpoint");
         }
 
-        this.log("no current setpoint");
         return 0; /* should error */
     },
 
