@@ -320,6 +320,7 @@ NexiaThermostat.prototype = {
     _setHVACMode: function(thisTStat, value, callback) {
         // should search settings for hvac_mode and not just
         // assume settings[0]
+        this.blockRefresh = 1;
         var f = this._findCurrentSetPoint(thisTStat);
         var c = (f - 32.0) / 1.8;
         var configRoot;
@@ -360,6 +361,7 @@ NexiaThermostat.prototype = {
                  
                 return this._setTemp(thisTStat, c);
             }).catch(function(err) {
+                this.blockRefresh = 0;
                 this.log("Error from _post to %s: %j", url, err);
             });
     },
