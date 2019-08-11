@@ -359,7 +359,7 @@ NexiaThermostat.prototype = {
                 if (tStatId === want_tStatId) {
         //            console.log(all_items[index]);
         //          
-                    this.log("Found themostat id: %d with name: %s", this.thermostatIndex, _findName(all_items[index]));
+                    this.log("Found themostat id: %d with name: %s", this.thermostatIndex, this._findName(all_items[index]));
                     return all_items[index];
                 }
             }
