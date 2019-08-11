@@ -302,7 +302,7 @@ NexiaThermostat.prototype = {
                 };
         }
 
-        this.log("JSON:" + json_struct);
+        this.log("JSON: %j", json_struct);
         return this._put(url, json_struct).promise().bind(this)
             .then(function(body) {
               this.log("Set Temp!");
