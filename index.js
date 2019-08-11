@@ -301,6 +301,7 @@ NexiaThermostat.prototype = {
                 //this.service.getCharacteristic(Characteristic.TargetTemperature).setValue(f);
                 // TODO -- the body may be able to reused for refreshData to avoid hitting
                 // the server again
+                setTimeout(this._refreshData.bind(this), 5 * 1000);
                 this._refreshData();
             }).catch(function(err) {
                 this.log("Error from _post to %s: %j", url, err);
