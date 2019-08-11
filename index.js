@@ -328,7 +328,7 @@ NexiaThermostat.prototype = {
 
         var zonemode = 1;
         for(var i = 0;i < thisTStat.settings.length;i++) {
-          if (thisTStat.settings[i].type == "zone_mode" || thisTStat.settings[i].type == "fan_mode") {
+          if (thisTStat.settings[i].type == "zone_mode") {
             zonemode = i;
             break;
           }
