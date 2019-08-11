@@ -303,7 +303,7 @@ NexiaThermostat.prototype = {
         }
 
         this.log("JSON: %j", json_struct);
-        return this._put(url, json_struct).promise().bind(this)
+        return this._post(url, json_struct).promise().bind(this)
             .then(function(body) {
               this.log("Set Temp!");
                 this.log(body);
@@ -315,7 +315,7 @@ NexiaThermostat.prototype = {
                 // the server again
                 this._refreshData();
             }).catch(function(err) {
-                this.log("Error from _put to %s: %j", url, err);
+                this.log("Error from _post to %s: %j", url, err);
             });
     }, 5000),
 
