@@ -326,6 +326,8 @@ NexiaThermostat.prototype = {
                 if (callback) {
                     callback(null, value);
                 }
+
+                this.service.getCharacteristic(Characteristic.TargetTemperature).setValue(f);
                         // TODO -- the body may be able to reused for refreshData to avoid hitting
                 // the server again
                 this._refreshData();
