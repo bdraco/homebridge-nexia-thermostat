@@ -416,7 +416,7 @@ NexiaThermostat.prototype = {
             rawState = thisTStat.zones[this.zone].operating_state;
             this.log("zone operating_state: %s", rawState);
             if (!rawState) {
-                this.log("zoneState missing: %j", thisTStat);
+                this.log("zoneState missing: %s", rawState);
                 return this.CurrentHeatingCoolingStateForConfigKey("off");
             } else if (rawState == "Damper Closed" || rawState == "Relieving Air") {
                 this.log("zoneState: %s - return off", rawState);
