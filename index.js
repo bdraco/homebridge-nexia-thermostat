@@ -2,6 +2,8 @@ var Service, Characteristic;
 var rp = require('request-promise');
 var debounce = require('lodash.debounce');
 var Promise = require('bluebird');
+var util = require('util');
+
 
 require('request-debug')(rp);
 
@@ -263,6 +265,7 @@ NexiaThermostat.prototype = {
 
 // *** url may be undef here because the stat has gone from Off to Cool/Heat
 // and we haven't updated the data yet so we don't have the url to set it
+        this.log("We are setting temp though _setTempDebounced to: " + util.inspect(thisTStat));
 
         var key_name = Object.keys(thisTStat.features[this.zone].actions)[0]
         var url = thisTStat.features[this.zone].actions[key_name].href;
