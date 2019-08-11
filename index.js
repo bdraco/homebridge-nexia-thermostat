@@ -442,7 +442,14 @@ NexiaThermostat.prototype = {
     _findCurrentState: function(thisTStat) {
         var rawState = "unknown";
         if (thisTStat.hasOwnProperty("zones")) {
-            rawState = thisTStat.zones[this.zone].current_zone_mode;
+            var currentTargetState = this._findTargetState(thisTStat);
+            rawState = thisTStat.zones[this.zone].operating_state;
+            if (!rawState || rawState == "Damper Closed") {
+                this.log("zoneState: %s - return off", rawState);
+                return this.CurrentHeatingCoolingStateForConfigKey(0);
+            }
+            this.log("zoneState: %s - return current TargetState: %d", rawState, currentTargetState);
+            return currentTargetState;
         } else if (thisTStat.hasOwnProperty("features")) {
             // should search settings for hvac_mode and not just
             // assume settings[0]
