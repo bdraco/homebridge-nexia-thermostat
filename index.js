@@ -17,6 +17,7 @@ function NexiaThermostat(log, config) {
     this.name = config.name;
     this.apiroute = config.apiroute;
     this.houseId = config.houseId;
+    this.zone = config.zone || 0;
     this.thermostatIndex = config.thermostatIndex;
     this.xMobileId = config.xMobileId;
     this.xApiKey = config.xApiKey;
@@ -354,7 +355,7 @@ NexiaThermostat.prototype = {
     _findTargetState: function(thisTStat) {
         var rawState = "unknown";
         if (thisTStat.hasOwnProperty("zones")) {
-            rawState = thisTStat.zones[0].current_zone_mode;
+            rawState = thisTStat.zones[this.zone].current_zone_mode;
         } else if (thisTStat.hasOwnProperty("settings")) {
             // should search settings for hvac_mode and not just
             // assume settings[0]
@@ -368,7 +369,7 @@ NexiaThermostat.prototype = {
     _findCurrentState: function(thisTStat) {
         var rawState = "unknown";
         if (thisTStat.hasOwnProperty("zones")) {
-            rawState = thisTStat.zones[0].current_zone_mode;
+            rawState = thisTStat.zones[this.zone].current_zone_mode;
         } else if (thisTStat.hasOwnProperty("features")) {
             // should search settings for hvac_mode and not just
             // assume settings[0]
@@ -383,7 +384,7 @@ NexiaThermostat.prototype = {
     _findCurrentSetPoint: function(thisTStat) {
         var target_state = this._findTargetState;
         if (thisTStat.hasOwnProperty("zones")) {
-            var zone_zero = thisTStat.zones[0];
+            var zone_zero = thisTStat.zones[this.zone];
             if (target_state === Characteristic.TargetHeatingCoolingState.COOL) {
                 return zone_zero.setpoints.cool;
             } else if (target_state === Characteristic.TargetHeatingCoolingState.HEAT) {
@@ -409,7 +410,7 @@ NexiaThermostat.prototype = {
 
     _findCurrentTemp: function(thisTStat) {
         if (thisTStat.hasOwnProperty("zones")) {
-            return thisTStat.zones[0].temperature;
+            return thisTStat.zones[this.zone].temperature;
         } else if (thisTStat.hasOwnProperty("features")) {
             return thisTStat.features[0].temperature;
         }
