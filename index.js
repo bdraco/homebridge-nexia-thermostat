@@ -326,6 +326,14 @@ NexiaThermostat.prototype = {
         var f = this._findCurrentSetPoint(thisTStat);
         var c = (f - 32.0) / 1.8;
 
+        var zonemode = 1;
+        for(var i = 0;i < thisTStat.settings.length;i++) {
+          if (thisTStat.settings[i].type == "zone_mode") {
+            zonemode = i;
+            break;
+          }
+        }
+
         var url = thisTStat.settings[0]._links.self.href;
         var txt_value = this.ConfigKeyForheatingCoolingState(value);
         var json_struct = {
