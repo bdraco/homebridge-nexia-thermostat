@@ -177,13 +177,11 @@ NexiaThermostat.prototype = {
 
                 this._updateData();
 
-                /* TODO */
-
                 /*
                  *
                  *
                  *
-                 * service
+                  service
                  *       .getCharacteristic(Characteristic.TargetTemperature)
                  *             .setProps({
                  *                     minValue: minTemperature,
@@ -338,6 +336,8 @@ NexiaThermostat.prototype = {
 
         var url = thisTStat.settings[zonemode]._links.self.href;
         var txt_value = this.ConfigKeyForheatingCoolingState(value);
+        
+        
         var json_struct = {
             "value": txt_value
         };
@@ -350,6 +350,24 @@ NexiaThermostat.prototype = {
                 // Since data is out of sync (HVAC state is wrong the set temp will fail)
                 // If we can use the body of the response to update the current Data
                 // this will fix it
+                var minTemperature = 12.77;
+                var maxTemperature = 37.22;
+                if (value == "heat") { 
+                 minTemperature = 12.77;
+                 maxTemperature = 32.22;
+                } else if (value == "cool") {
+                 minTemperature = 15.55;
+                 maxTemperature = 37.22;
+                }
+                  service
+                .getCharacteristic(Characteristic.TargetTemperature)
+                .setProps({
+                  minValue: minTemperature,
+                  maxValue: maxTemperature,
+                  minStep: 1
+                });
+                
+                 
                 return this._setTemp(thisTStat, c);
             }).catch(function(err) {
                 this.log("Error from _post to :" + url + ":  " + err);
