@@ -270,9 +270,10 @@ NexiaThermostat.prototype = {
         if (thisTStat.hasOwnProperty("zones")) {
           this.log("zones: %j", thisTStat.zones);
           this.log("this zones: %j", thisTStat.zones[this.zone]);
-          this.log("this zone actions: %j", thisTStat.zones[this.zone].actions);
-            key_name = Object.keys(thisTStat.zones[this.zone].actions)[0];
-            url = thisTStat.zones[this.zone].actions[key_name].href;
+          this.log("this zone features: %j", thisTStat.zones[this.zone].features[0]);
+          this.log("this zone actions: %j", thisTStat.zones[this.zone].features[0].actions);
+            key_name = Object.keys(thisTStat.zones[this.zone].features[0].actions)[0];
+            url = thisTStat.zones[this.zone].features[0].actions[key_name].href;
         } else if (thisTStat.hasOwnProperty("features")) {
             key_name = Object.keys(thisTStat.features[0].actions)[0];
             url = thisTStat.features[0].actions[key_name].href;
