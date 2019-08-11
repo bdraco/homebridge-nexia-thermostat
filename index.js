@@ -277,7 +277,7 @@ NexiaThermostat.prototype = {
     },
     _setTempDebounced: debounce(function(thisTStat, value, callback) {
       this.log("_setTempDebounced entered with value:" + value);
-        var f = Math.round(value * 1.8 + 32.0);
+        var f = Math.ceil(value * 1.8 + 32.0);
         // should search settings for hvac_mode and not just
         // assume settings[0]
 
