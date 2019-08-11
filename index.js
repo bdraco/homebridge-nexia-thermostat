@@ -315,7 +315,7 @@ NexiaThermostat.prototype = {
                 // the server again
                 this._refreshData();
             }).catch(function(err) {
-                this.log("Error from _put to :" + url + ":  " + err);
+                this.log("Error from _put to %s: %j", url, err);
             });
     }, 5000),
 
