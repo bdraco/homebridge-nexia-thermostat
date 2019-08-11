@@ -328,13 +328,13 @@ NexiaThermostat.prototype = {
 
         var zonemode = 1;
         for(var i = 0;i < thisTStat.settings.length;i++) {
-          if (thisTStat.settings[i].type == "zone_mode") {
+          if (thisTStat.settings[i].type == "zone_mode" || thisTStat.settings[i].type == "fan_mode") {
             zonemode = i;
             break;
           }
         }
 
-        var url = thisTStat.settings[0]._links.self.href;
+        var url = thisTStat.settings[zonemode]._links.self.href;
         var txt_value = this.ConfigKeyForheatingCoolingState(value);
         var json_struct = {
             "value": txt_value
