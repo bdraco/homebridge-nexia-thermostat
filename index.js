@@ -27,6 +27,7 @@ function NexiaThermostat(log, config) {
     this.model = config.model;
     this.serialNumber = config.serialNumber;
     this.service = new Service.Thermostat(this.name);
+    this.blockRefresh = 0;
     this.TStatData = {};
     this._currentData = {};
 }
@@ -178,13 +179,16 @@ NexiaThermostat.prototype = {
             .on('get', this.getName.bind(this));
 
         this._refreshData();
-
         setInterval(this._refreshData.bind(this), 90 * 1000);
 
         return [informationService, this.service];
     },
 
     _refreshData: function() {
+        if (this.blockRefresh) {
+            this.log("refresh is blocked");
+            return;
+        }
         this._get("houses/" + this.houseId).promise().bind(this)
             .then(function(body) {
                 this.log("Refreshed Data!");
@@ -240,6 +244,7 @@ NexiaThermostat.prototype = {
 
     _setTemp: function(thisTStat, value, callback) {
         this.log("We are setting temp though _setTempDebounced to: %f" , value);
+        this.blockRefresh = 1;
         this._setTempDebounced(thisTStat, value, function() {
             this.log('Temperature set to %f: ' , value);
         }.bind(this));
@@ -301,9 +306,12 @@ NexiaThermostat.prototype = {
                 //this.service.getCharacteristic(Characteristic.TargetTemperature).setValue(f);
                 // TODO -- the body may be able to reused for refreshData to avoid hitting
                 // the server again
-                setTimeout(this._refreshData.bind(this), 5 * 1000);
-                this._refreshData();
+                setTimeout(function () {
+                    this.blockRefresh = 0;
+                    this._refreshData();
+                }.bind(this), 5 * 1000);
             }).catch(function(err) {
+                this.blockRefresh = 0;
                 this.log("Error from _post to %s: %j", url, err);
             });
     }, 5000),
