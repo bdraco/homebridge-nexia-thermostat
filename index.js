@@ -265,10 +265,18 @@ NexiaThermostat.prototype = {
 
 // *** url may be undef here because the stat has gone from Off to Cool/Heat
 // and we haven't updated the data yet so we don't have the url to set it
-        this.log("We are setting temp though _setTempDebounced to: %j", thisTStat);
+        var key_name;
+        var url;
+        if (thisTStat.hasOwnProperty("zones")) {
+            key_name = Object.keys(thisTStat.zones[this.zone].actions)[0];
+            url = thisTStat.zones[this.zone].actions[key_name].href;
+        } else if (thisTStat.hasOwnProperty("features")) {
+            key_name = Object.keys(thisTStat.features[0].actions)[0];
+            url = thisTStat.features[0].actions[key_name].href;
+        } else {
+            this.log("zones and features missing: %j", thisTStat);
+        }
 
-        var key_name = Object.keys(thisTStat.features[this.zone].actions)[0]
-        var url = thisTStat.features[this.zone].actions[key_name].href;
         var targetState = this._findTargetState(thisTStat);
         this.log("_findTargetState: " + targetState);
         var json_struct;
@@ -333,7 +341,6 @@ NexiaThermostat.prototype = {
                 this.log("Error from _post to :" + url + ":  " + err);
             });
     },
-
 
     _findTStatInNexiaResponse: function() {
         var data = this._currentData;
