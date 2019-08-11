@@ -114,6 +114,7 @@ NexiaThermostat.prototype = {
         }
         // TODO: We need to debounce this so there is a 3s delay before calling
         // this in case they are sliding
+        this.log("setTargetTemperature: target=[%f]", value);
 
         var thisTStat = this._findTStatInNexiaResponse();
         return this._setTemp(thisTStat, value, callback);
@@ -239,9 +240,9 @@ NexiaThermostat.prototype = {
     },
 
     _setTemp: function(thisTStat, value, callback) {
-        this.log("We are setting temp though _setTempDebounced to: " + value);
+        this.log("We are setting temp though _setTempDebounced to: %f" , value);
         this._setTempDebounced(thisTStat, value, function() {
-            this.log('Temperature set to ' + value);
+            this.log('Temperature set to %f: ' , value);
         }.bind(this));
         return Promise.resolve().asCallback(callback);
 
