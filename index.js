@@ -71,7 +71,6 @@ NexiaThermostat.prototype = {
             maxValue: maxTemperature,
             minStep: 1
           });
-                
  
         return callback(null, characteristic);
     },
@@ -196,35 +195,6 @@ NexiaThermostat.prototype = {
                 }
                 this._currentData = parse;
                 this._updateData();
-                /*
-                 *
-                 *
-                 *
-                  service
-                 *       .getCharacteristic(Characteristic.TargetTemperature)
-                 *             .setProps({
-                 *                     minValue: minTemperature,
-                 *                             maxValue: maxTemperature,
-                 *                                     minStep: 1
-                 *                                           });
-                 *
-                 *                                               service
-                 *                                                     .getCharacteristic(Characteristic.CurrentTemperature)
-                 *                                                           .setProps({
-                 *                                                                   minValue: minTemperature,
-                 *                                                                           maxValue: maxTemperature,
-                 *                                                                                   minStep: 1
-                 *                                                                                         });
-                 *
-                 *
-                 *
-                 *
-                 *
-                 *
-                 *
-                 *
-                 */
-
                 return;
             }).catch(function(err) {
                 this.log("Error from get: %j", err);
@@ -418,6 +388,7 @@ NexiaThermostat.prototype = {
         } else {
             this.log("no state");
         }
+        this.log("_findTargetState: %s", rawState);
         return this.TargetHeatingCoolingStateForConfigKey(rawState);
     },
 
