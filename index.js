@@ -493,7 +493,7 @@ NexiaThermostat.prototype = {
     ConfigKeyForheatingCoolingState: function(state) {
         switch (state) {
             case Characteristic.TargetHeatingCoolingState.AUTO:
-                return "heat-cool";
+                return "AUTO";
             case Characteristic.TargetHeatingCoolingState.COOL:
                 return "cool";
             case Characteristic.TargetHeatingCoolingState.HEAT:
