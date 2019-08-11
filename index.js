@@ -359,7 +359,7 @@ NexiaThermostat.prototype = {
                 if (tStatId === want_tStatId) {
         //            console.log(all_items[index]);
         //          
-                    this.log("Found themostat id: %d with name: %s and operating_state: %s", this.thermostatIndex, all_items[index].name, all_items[index].operating_state);
+                    this.log("Found themostat id: %d with name: %s", this.thermostatIndex, _findName(all_items[index]));
                     return all_items[index];
                 }
             }
@@ -381,6 +381,22 @@ NexiaThermostat.prototype = {
         }
         return this.TargetHeatingCoolingStateForConfigKey(rawState);
     },
+
+    _findName: function(thisTStat) {
+        var rawName = "unknown";
+        if (thisTStat.hasOwnProperty("zones")) {
+            rawName = thisTStat.zones[this.zone].name;
+        } else if (thisTStat.hasOwnProperty("features")) {
+            // should search settings for hvac_mode and not just
+            // assume settings[0]
+            rawName = thisTStat.features[this.zone].name;
+            this.log("_findName:" + rawName);
+        } else {
+            this.log("no state");
+        }
+        return rawName; 
+    },
+
 
     _findCurrentState: function(thisTStat) {
         var rawState = "unknown";
