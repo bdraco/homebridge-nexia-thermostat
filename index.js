@@ -268,6 +268,9 @@ NexiaThermostat.prototype = {
         var key_name;
         var url;
         if (thisTStat.hasOwnProperty("zones")) {
+          this.log("zones: %j", thisTStat.zones);
+          this.log("this zones: %j", thisTStat.zones[this.zone]);
+          this.log("this zone actions: %j", thisTStat.zones[this.zone].actions);
             key_name = Object.keys(thisTStat.zones[this.zone].actions)[0];
             url = thisTStat.zones[this.zone].actions[key_name].href;
         } else if (thisTStat.hasOwnProperty("features")) {
