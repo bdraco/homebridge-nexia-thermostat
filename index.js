@@ -20,7 +20,7 @@ function NexiaThermostat(log, config) {
     this.apiroute = config.apiroute;
     this.houseId = config.houseId;
     this.zone = config.zone || 0;
-    this.thermostatIndex = config.thermostatIndex;
+    this.thermostatId = config.thermostatId;
     this.xMobileId = config.xMobileId;
     this.xApiKey = config.xApiKey;
     this.manufacturer = config.manufacturer;
@@ -378,16 +378,15 @@ NexiaThermostat.prototype = {
         var data = this._currentData;
 
         var all_items = data.result._links.child[0].data.items;
-        var want_tStatId = this.thermostatIndex;
+        var want_tStatId = this.thermostatId;
         var tStatId = -1;
 
         for (var index = 0; index < all_items.length; index++) {
             if (all_items[index].type.indexOf('thermostat') > -1) {
-                tStatId++;
-                if (tStatId === want_tStatId) {
+                if (all_items[index].id === want_tStatId) {
         //            console.log(all_items[index]);
         //          
-                    this.log("Found themostat id: %d and zone %d with name: %s", this.thermostatIndex, this.zone, this._findName(all_items[index]));
+                    this.log("Found themostat id: %d and zone %d with name: %s", this.thermostatId, this.zone, this._findName(all_items[index]));
                     return all_items[index];
                 }
             }
